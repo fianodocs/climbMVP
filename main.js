@@ -1,7 +1,8 @@
 class Game {
     constructor() {
+        this.climb = new Climb()
         this.player = new Player();
-    
+        
     }
     start() {
 
@@ -21,11 +22,22 @@ class Game {
                 
             } else if (event.key === " ") {
                 this.player.jump()
+                this.gravity()
             }
         });
-    
     }
-   
+    gravity(){
+        let drop = setInterval(()=>{
+            if(this.player.positionY > this.climb.height){
+                this.player.positionY -= this.player.velocity.y
+                this.player.domElement.style.bottom = this.player.positionY +"vh" 
+                this.player.velocity.y += 0.5
+                console.log("falling")
+            } else { 
+            this.player.velocity.y = 0 
+            clearInterval(drop)}
+       },100)
+    }
 }
 
 class Player {
@@ -33,8 +45,11 @@ class Player {
         this.width = 2.5;
         this.height = 5;
         this.positionX = 50 - (this.width / 2);
-        this.positionY = 0;
-        
+        this.positionY = 80;
+        this.velocity = {
+            x: 0,
+            y: 1,
+        }
         
 
 
@@ -70,20 +85,31 @@ class Player {
         this.positionY += 5
         this.domElement.style.bottom = this.positionY + "vh"
         console.log("jumping")
-        this.gravity()
+        
     }
-    gravity(){
-      if(this.domElement.style.bottom > 0+"vh"){ setInterval(()=>{
-    
-            this.positionY--;
-            this.domElement.style.bottom = this.positionY +"vh"
-            console.log("falling");    
-    
-       },500)
-    }
-    }
+   
 
+}
 
+class Climb{
+    constructor(){
+        this.width = 100
+        this.height = 10
+        this.positionY = 0
+        this.domElement = null
+    
+        this.createDomElement()
+    }
+    createDomElement(){
+        this.domElement = document.createElement("div")
+        this.domElement.id = "ground"
+        this.domElement.style.width = this.width + "vw"
+        this.domElement.style.height = this.height +"vh"
+        this.domElement.style.bottom = this.positionY +"vh"
+        
+        const parentElm = document.getElementById("climb")
+        parentElm.appendChild(this.domElement)
+    }
 }
 
 const game = new Game();
