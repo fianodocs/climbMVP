@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+body{
+    background-color: black;
+    
+
+
+}
+#climb{
+    background-color: #eee;
+    height: 100vh;
+    position: relative;
+}
+#player{
+    background-color: brown;
+    position: absolute;
+}
